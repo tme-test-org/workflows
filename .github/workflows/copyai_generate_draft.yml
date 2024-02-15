@@ -1,14 +1,24 @@
 name: CopyAI Generate draft
 
-on: workflow_call
+on: 
+  workflow_call:
+    inputs:
+      ORG_NAME:
+        required: true
+        type: string
+      CB:
+        required: true
+        type: string
+      CTB:
+        required: true
+        type: string
+      COPYAI_WF_ID:
+        required: true
+        type: string
 
 env:
-  ORG_NAME: ${{ vars.ORG_NAME }}
-  CB: ${{ vars.CB }}
-  CTB: ${{ vars.CTB }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
   COPYAI_API_KEY: ${{ secrets.COPYAI_API_KEY }}        
-  COPYAI_WF_ID: ${{ vars.COPYAI_WF_ID }}        
 
 jobs:
   build:
