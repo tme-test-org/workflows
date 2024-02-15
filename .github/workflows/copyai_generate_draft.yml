@@ -1,8 +1,6 @@
 name: CopyAI Generate draft
 
-on: 
-  repository_dispatch:
-    types: [copyai-draft] #Manual triggered from Coda
+on: workflow_call
 
 env:
   ORG_NAME: ${{ vars.ORG_NAME }}
