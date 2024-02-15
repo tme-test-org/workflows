@@ -1,0 +1,82 @@
+name: Check for upstream changes
+on:
+  # schedule:
+    # - cron: "*/5 * * * *" #Run check every 5 minutes
+  repository_dispatch:
+    types: [check-versions] #Manual triggered from Coda
+
+env:
+  ORG_NAME: ${{ vars.ORG_NAME }}
+  CB: ${{ vars.CB }}
+  CTB: ${{ vars.CTB }}
+
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.ref_name }}
+
+      - name: Setup git config
+        run: |
+          git config --global user.email your-email@users.noreply.github.com
+          git config --global user.name 'Pipeline'
+
+      - name: Initialize upstream checking
+        id: initialize
+        run: |
+          test -f .github/upstream_versions/cb.txt && echo "cb-exists=true" >> $GITHUB_OUTPUT || echo "cb-exists=false" >> $GITHUB_OUTPUT
+          test -f .github/upstream_versions/ctb.txt && echo "ctb-exists=true" >> $GITHUB_OUTPUT || echo "ctb-exists=false" >> $GITHUB_OUTPUT
+          test -f .github/upstream_versions/cb-change-detected.txt && echo "cb-change-flag-set=true" >> $GITHUB_OUTPUT || echo "cb-change-flag-set=false" >> $GITHUB_OUTPUT
+          test -f .github/upstream_versions/ctb-change-detected.txt && echo "ctb-change-flag-set=true" >> $GITHUB_OUTPUT || echo "ctb-change-flag-set=false" >> $GITHUB_OUTPUT
+      
+      - name: Create cb version file if does not yet exist
+        if: steps.initialize.outputs.cb-exists == 'false'
+        run: |      
+          echo "CB version file does not exist."
+          curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/cb.txt
+          git add .github/upstream_versions/cb.txt
+          git commit -m "Create upstream CB version file."
+          git push          
+
+      - name: Create ctb version file if does not yet exist
+        if: steps.initialize.outputs.ctb-exists == 'false'
+        run: |      
+          echo "CTB version file does not exist."
+          curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | jq -r ".tag_name" > .github/upstream_versions/ctb.txt
+          git add .github/upstream_versions/ctb.txt
+          git commit -m "Create upstream CTB version files."
+          git push          
+
+      - name: Fetch release version
+        id: version-compare
+        run: |
+          echo cb-repo-version=$(cat .github/upstream_versions/cb.txt) >> $GITHUB_OUTPUT
+          echo ctb-repo-version=$(cat .github/upstream_versions/ctb.txt) >> $GITHUB_OUTPUT
+          echo cb-upstream-version=$(curl -sL https://api.github.com/repos/$ORG_NAME/$CB/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
+          echo ctb-upstream-version=$(curl -sL https://api.github.com/repos/$ORG_NAME/$CTB/releases/latest | jq -r ".tag_name") >> $GITHUB_OUTPUT
+
+      - name: CB upstream changes
+        if: steps.version-compare.outputs.cb-repo-version != steps.version-compare.outputs.cb-upstream-version && !steps.initialize.outputs.cb-change-flag-set
+        run: |
+            echo "New CB version upstream!"
+            echo "Set some flag (JIRA? Issue?)"
+            touch .github/upstream_versions/cb-change-detected.txt
+            git add .github/upstream_versions/cb-change-detected.txt
+            git commit -m "Set change detected in CB flag."
+            git push
+
+      - name: CTB upstream changes
+        if: steps.version-compare.outputs.ctb-repo-version != steps.version-compare.outputs.ctb-upstream-version && !steps.initialize.outputs.ctb-change-flag-set
+        run: |
+          echo "New CTB version upstream!"
+          echo "Set some flag (JIRA? Issue?)"
+          touch .github/upstream_versions/ctb-change-detected.txt
+          git add .github/upstream_versions/ctb-change-detected.txt
+          git commit -m "Set change detected in CTB flag."
+          git push

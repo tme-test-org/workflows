@@ -1,0 +1,56 @@
+name: CopyAI Generate draft
+
+on: 
+  repository_dispatch:
+    types: [copyai-draft] #Manual triggered from Coda
+
+env:
+  ORG_NAME: ${{ vars.ORG_NAME }}
+  CB: ${{ vars.CB }}
+  CTB: ${{ vars.CTB }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+  COPYAI_API_KEY: ${{ secrets.COPYAI_API_KEY }}        
+  COPYAI_WF_ID: ${{ vars.COPYAI_WF_ID }}        
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  
+      - name: Get upstream meta data
+        run: |
+          mkdir tmp
+          cd tmp
+          wget https://raw.githubusercontent.com/$ORG_NAME/$CB/main/README.md
+          mv README.md cb.txt
+          cat cb.txt
+          wget https://raw.githubusercontent.com/$ORG_NAME/$CTB/main/README.md
+          mv README.md ctb.txt
+          cat ctb.txt
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'               
+      - name: Resolve python requirements
+        run: |
+          pip install -r .github/copyai/requirements.txt
+      - name: Create draft content with CopyAI
+        run: |
+          cp .github/copyai/copyai.py .
+          python3 copyai.py
+      - name: Setup git config
+        run: |
+          git config --global user.email your-email@users.noreply.github.com
+          git config --global user.name 'Pipeline'             
+      - name: Submit draft to repository
+        run: |
+          export COPYAI_OUTPUT=CopyAI_Draft_`date +"%d-%m-%Y-%H:%M:%S"`.md
+          mv output.md $COPYAI_OUTPUT
+          git add $COPYAI_OUTPUT
+          git commit -m "Add CopyAI draft."
+          git push                          
+
+        

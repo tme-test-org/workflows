@@ -1,0 +1,23 @@
+name: Releases
+
+on: 
+  repository_dispatch:
+    types: [release] #Manual triggered from Coda
+
+env:
+  ORG_NAME: ${{ vars.ORG_NAME }}
+  CB: ${{ vars.CB }}
+  CTB: ${{ vars.CTB }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  
+      - name: Release
+        uses: huggingface/semver-release-action@latest
+     

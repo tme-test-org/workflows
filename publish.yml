@@ -1,0 +1,26 @@
+#Reset change detected flag when new content is created, or when manually triggered.
+
+name: Publish content
+on:
+  repository_dispatch:
+    types: [publish] #Manual triggered from Coda
+
+env:
+  ORG_NAME: ${{ vars.ORG_NAME }}
+  CB: ${{ vars.CB }}
+  CTB: ${{ vars.CTB }}
+
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.ref_name }}
+      - name: Publish
+        run: |
+          echo "Publishing the content!"
