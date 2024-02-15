@@ -18,7 +18,8 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
-  COPYAI_API_KEY: ${{ secrets.COPYAI_API_KEY }}        
+  COPYAI_API_KEY: ${{ secrets.COPYAI_API_KEY }}       
+  COPYAI_WF_ID: ${{ inputs.COPYAI_WF_ID }}       
 
 jobs:
   build:
@@ -32,10 +33,10 @@ jobs:
         run: |
           mkdir tmp
           cd tmp
-          wget https://raw.githubusercontent.com/$ORG_NAME/$CB/main/README.md
+          wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CB }}/main/README.md
           mv README.md cb.txt
           cat cb.txt
-          wget https://raw.githubusercontent.com/$ORG_NAME/$CTB/main/README.md
+          wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CTB }}/main/README.md
           mv README.md ctb.txt
           cat ctb.txt
       - name: Install Python
