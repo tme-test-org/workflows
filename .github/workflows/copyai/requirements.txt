@@ -1,0 +1,10 @@
+certifi==2024.2.2
+chardet==5.2.0
+charset-normalizer==3.3.2
+idna==3.6
+pdfdocument==4.0.0
+pillow==10.2.0
+reportlab==4.0.9
+requests==2.31.0
+urllib3==2.2.0
+pathlib==1.0.1
