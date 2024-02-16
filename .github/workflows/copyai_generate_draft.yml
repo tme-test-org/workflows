@@ -49,7 +49,7 @@ jobs:
           pip install -r requirements.txt
       - name: Create draft content with CopyAI
         run: |
-          wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/workflows/main/.github/copyai/copyai.py .
+          wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/workflows/main/.github/copyai/copyai.py
           python3 copyai.py
       - name: Setup git config
         run: |
