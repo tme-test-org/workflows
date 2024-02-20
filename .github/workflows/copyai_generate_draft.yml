@@ -15,11 +15,16 @@ on:
       COPYAI_WF_ID:
         required: true
         type: string
+      COPYAI_WF_ID_v2:
+          required: true
+          type: string        
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}        
   COPYAI_API_KEY: ${{ secrets.COPYAI_API_KEY }}       
   COPYAI_WF_ID: ${{ inputs.COPYAI_WF_ID }}       
+  COPYAI_API_KEY_v2: ${{ secrets.COPYAI_API_KEY_v2 }}       
+  COPYAI_WF_ID_v2: ${{ inputs.COPYAI_WF_ID_v2 }}     
 
 jobs:
   build:
@@ -49,8 +54,8 @@ jobs:
           pip install -r requirements.txt
       - name: Create draft content with CopyAI
         run: |
-          wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/workflows/main/.github/copyai/copyai.py
-          python3 copyai.py
+          wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/workflows/main/.github/copyai/copyaiv2.py
+          python3 copyaiv2.py
       - name: Setup git config
         run: |
           git config --global user.email your-email@users.noreply.github.com
