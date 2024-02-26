@@ -13,14 +13,14 @@ url = f"https://api.copy.ai/api/workflow/{workflow_id}/run"
 
 cb = Path('tmp/cb.txt').read_text()
 ctb = Path('tmp/ctb.txt').read_text()
-ctx = ""
+ctx = Path('tmp/ctx.txt').read_text()
 
 payload = {
     "startVariables" : {},
     "metadata" : {"api": True},
 }
 payload["startVariables"]["content_type"] = ctb
-payload["startVariables"]["background"] = """You are a technical content writer for a software vendor called Aviatrix."""
+payload["startVariables"]["background_prompt"] = """You are a technical content writer for a software vendor called Aviatrix."""
 payload["startVariables"]["content_brief"] = cb
 payload["startVariables"]["context"] = ctx
 

@@ -12,6 +12,9 @@ on:
       CTB:
         required: true
         type: string
+      CTX:
+        required: true
+        type: string        
       COPYAI_WF_ID:
         required: true
         type: string
@@ -44,6 +47,10 @@ jobs:
           wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CTB }}/main/README.md
           mv README.md ctb.txt
           cat ctb.txt
+          for i in $(echo ${{ inputs.CTX }} | jq -r '.[]'); do
+            echo ${i}
+          done
+          touch ctx.txt
       - name: Install Python
         uses: actions/setup-python@v5
         with:
