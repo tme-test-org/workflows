@@ -41,11 +41,11 @@ jobs:
         run: |
           mkdir tmp
           cd tmp
-          curl -H "Authorization: token ${{GITHUB_TOKEN}}" https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CB }}/main/README.md
+          curl -H "Authorization: token ${{secrets.GITHUB_TOKEN}}" https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CB }}/main/README.md
           #wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CB }}/main/README.md
           mv README.md cb.txt
           cat cb.txt
-          curl -H "Authorization: token ${{GITHUB_TOKEN}}" https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CTB }}/main/README.md
+          curl -H "Authorization: token ${{secrets.GITHUB_TOKEN}}" https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CTB }}/main/README.md
           #wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CTB }}/main/README.md
           mv README.md ctb.txt
           cat ctb.txt
