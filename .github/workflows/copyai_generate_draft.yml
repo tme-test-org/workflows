@@ -42,11 +42,11 @@ jobs:
           mkdir tmp
           cd tmp
           #curl -H "Authorization: token ${{secrets.GITHUB_TOKEN}}" https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CB }}/main/README.md
-          wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CB }}/main/README.md?token=${{secrets.GITHUB_TOKEN}}
+          wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CB }}/main/README.md?token=${GITHUB_TOKEN}
           mv README.md cb.txt
           cat cb.txt
           #curl -H "Authorization: token ${{secrets.GITHUB_TOKEN}}" https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CTB }}/main/README.md
-          wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CTB }}/main/README.md?token=${{secrets.GITHUB_TOKEN}}
+          wget https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CTB }}/main/README.md?token=${GITHUB_TOKEN}
           mv README.md ctb.txt
           cat ctb.txt
           for i in $(echo ${{ inputs.CTX }} | jq -r '.[]'); do
