@@ -45,7 +45,7 @@ jobs:
           cat cb.txt
           curl -o ctb.txt -H "Authorization: token ${{secrets.TME_READ_ONLY}}" https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/${{ inputs.CTB }}/main/README.md
           cat ctb.txt
-          for i in $(echo ${{ inputs.CTX }} | jq -r '.[]'); do
+          for i in $(echo '${{ inputs.CTX }}' | jq -r '.[]'); do
             echo ${i}
           done
           touch ctx.txt
