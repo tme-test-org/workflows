@@ -3,7 +3,7 @@ import json
 import time
 import sys
 import os
-from pdfdocument.document import PDFDocument
+# from pdfdocument.document import PDFDocument
 from pathlib import Path
 
 api_key = os.getenv('COPYAI_API_KEY_v2')
@@ -67,16 +67,16 @@ while True:
         # Wait for the status to change to 'COMPLETE' and print the output
         if track_response_dict['data']['status'] == 'COMPLETE':
             output_dict = track_response_dict['data']['output']
-            if 'use_prompt_input' in output_dict:
+            if 'fairy_dust' in output_dict:
                 print("\n\n")
                 # print("\n\n##############################")
                 # print("########### OUTPUT ###########")
                 # print("##############################")
-                print(output_dict['use_prompt_input'])
+                print(output_dict['fairy_dust'])
 
 
 
-                content = output_dict['use_prompt_input']
+                content = output_dict['fairy_dust']
 
 ### MD Generation ###
                 with open("output.md", "w") as f:
@@ -87,20 +87,21 @@ while True:
 ### PDF GENERATION ###
 
                 # Create a new PDF document
-                pdf = PDFDocument("output.pdf")
+                # pdf = PDFDocument("output.pdf")
 
                 # Add the content to the PDF document
-                pdf.init_report()
-                pdf.h2('Output')
-                pdf.p(content)
+                # pdf.init_report()
+                # pdf.h2('Output')
+                # pdf.p(content)
 
                 # Save the PDF document
-                pdf.generate()
+                # pdf.generate()
 
                 #print("Output saved to output.pdf")
 
             else:
-                print("'use_prompt_input' not found in 'output'.")
+                print("'fairy_dust' not found in 'output'.")
+                print(json.dumps(output_dict, indent=4))
             break
 
     else:
