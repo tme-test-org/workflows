@@ -76,16 +76,16 @@ while True:
         # Wait for the status to change to 'COMPLETE' and print the output
         if track_response_dict['data']['status'] == 'COMPLETE':
             output_dict = track_response_dict['data']['output']
-            if 'use_prompt_input' in output_dict:
+            if 'final_output' in output_dict:
                 print("\n\n")
                 # print("\n\n##############################")
                 # print("########### OUTPUT ###########")
                 # print("##############################")
-                print(output_dict['use_prompt_input'])
+                print(output_dict['final_output'])
 
 
 
-                content = output_dict['use_prompt_input']
+                content = output_dict['final_output']
 
 ### MD Generation ###
                 with open("output.md", "w") as f:
@@ -109,7 +109,7 @@ while True:
                 #print("Output saved to output.pdf")
 
             else:
-                print("'use_prompt_input' not found in 'output'.")
+                print("'final_output' not found in 'output'.")
                 print(json.dumps(output_dict, indent=4))
             break
 
