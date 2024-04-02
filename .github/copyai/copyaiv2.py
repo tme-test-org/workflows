@@ -70,7 +70,7 @@ while True:
             sys.stdout.write('\r' + "Status: " + status + "...")
             sys.stdout.flush()
             if (status == "FAILED" or x == False):
-                print("\nThere was an issue obtaining a response from Copy.AI")
+                print("\nERROR: There was an issue obtaining a response from Copy.AI")
                 exit(1)
 
         # Wait for the status to change to 'COMPLETE' and print the output
