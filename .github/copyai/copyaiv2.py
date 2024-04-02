@@ -57,6 +57,8 @@ track_url = f"https://api.copy.ai/api/workflow/{workflow_id}/run/{run_id}"
 track_response = requests.get(track_url, headers=headers)
 
 
+x = True #Build a timeout function. Something like x = time. If time - x = > 5m: break
+
 while True:
     track_response = requests.get(track_url, headers=headers)
     track_response_dict = json.loads(track_response.text)
@@ -64,9 +66,10 @@ while True:
     if 'data' in track_response_dict:
 
         if 'status' in track_response_dict['data']:
-            sys.stdout.write('\r' + "Status: " + track_response_dict['data']['status'] + "...")
+            status = track_response_dict['data']['status']
+            sys.stdout.write('\r' + "Status: " + status + "...")
             sys.stdout.flush()
-            if 'status' == "FAILED":
+            if status == "FAILED" || x = False:
                 break
 
         # Wait for the status to change to 'COMPLETE' and print the output
