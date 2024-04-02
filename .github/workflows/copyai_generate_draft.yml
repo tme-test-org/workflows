@@ -49,7 +49,7 @@ jobs:
           for i in $(echo '${{ inputs.CTX }}' | jq -r '.[]'); do
             curl -H "Authorization: token ${{secrets.TME_READ_ONLY}}" https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/$i/main/README.md >> ctx.txt
           done
-          if [ ! -f ../research_statement.txt ]; then echo "Do not execute this statement." > ../research_statement.txt fi
+          if [ ! -f ../research_statement.txt ]; then echo "Do not execute this statement." > ../research_statement.txt; fi
           cat ../research_statement.txt
 
       - name: Install Python
