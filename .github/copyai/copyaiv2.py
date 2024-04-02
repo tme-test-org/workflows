@@ -69,7 +69,7 @@ while True:
             status = track_response_dict['data']['status']
             sys.stdout.write('\r' + "Status: " + status + "...")
             sys.stdout.flush()
-            if (status == "FAILED" or x = False):
+            if (status == "FAILED" or x == False):
                 break
 
         # Wait for the status to change to 'COMPLETE' and print the output
