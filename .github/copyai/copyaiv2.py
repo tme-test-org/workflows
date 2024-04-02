@@ -15,6 +15,8 @@ cb = Path('tmp/cb.txt').read_text()
 ctb = Path('tmp/ctb.txt').read_text()
 ctx = Path('tmp/ctx.txt').read_text()
 
+research_statement = Path('tmp/research_statement.txt').read_text()
+
 payload = {
     "startVariables" : {},
     "metadata" : {"api": True},
@@ -23,6 +25,7 @@ payload["startVariables"]["content_type"] = ctb
 payload["startVariables"]["background_prompt"] = """You are a technical content writer for a software vendor called Aviatrix."""
 payload["startVariables"]["content_brief"] = cb
 payload["startVariables"]["context"] = ctx
+payload["startVariables"]["research_statement"] = research_statement
 
 headers = {
 	"Content-Type": "application/json",
