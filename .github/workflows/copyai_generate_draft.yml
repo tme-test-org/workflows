@@ -49,8 +49,8 @@ jobs:
           for i in $(echo '${{ inputs.CTX }}' | jq -r '.[]'); do
             curl -H "Authorization: token ${{secrets.TME_READ_ONLY}}" https://raw.githubusercontent.com/${{ inputs.ORG_NAME }}/$i/main/README.md >> ctx.txt
           done
-          touch research_statement.txt
-          cat research_statement.txt
+          touch ../research_statement.txt
+          cat ../research_statement.txt
 
       - name: Install Python
         uses: actions/setup-python@v5
