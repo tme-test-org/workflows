@@ -15,7 +15,7 @@ cb = Path('tmp/cb.txt').read_text()
 ctb = Path('tmp/ctb.txt').read_text()
 ctx = Path('tmp/ctx.txt').read_text()
 
-research_statement = Path('tmp/research_statement.txt').read_text()
+research_statement = Path('research_statement.txt').read_text()
 
 payload = {
     "startVariables" : {},
